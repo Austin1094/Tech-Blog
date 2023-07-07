@@ -19,7 +19,7 @@ To connect to the database and connect to the server, follow these steps:
 
 - Run `source db/schema.sql`
 
-- Run `use techblog_db`, and then type "quit"
+- Run `use tech_db`, and then type "quit"
 
 - Finally, run `npm start`
 

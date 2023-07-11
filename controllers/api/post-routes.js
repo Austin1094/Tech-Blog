@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const sequelize = require('../../config/connection');
+const Sequelize = require('../../config/connection');
 const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
@@ -15,6 +15,10 @@ router.get('/', withAuth, (req, res) => {
                     attributes: ["username"],
                 },
             },
+            {
+                model: User,
+                attributes: ["username"],
+            },
         ],
     })
         .then(postData => res.json(postData))
@@ -24,7 +28,7 @@ router.get('/', withAuth, (req, res) => {
         });
 });
 
-router.get('/:id', withAuth, (req, res) => {
+router.get('/:id', (req, res) => {
     Post.findOne({
         where: {
             id: req.params.id
@@ -38,6 +42,10 @@ router.get('/:id', withAuth, (req, res) => {
                     model: User,
                     attributes: ["username"],
                 },
+            },
+            {
+                model: User,
+                attributes: ["username"],
             },
         ],
     })

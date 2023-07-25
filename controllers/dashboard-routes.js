@@ -1,46 +1,52 @@
 const router = require('express').Router();
-const { Post, Comment, User } = require('../models');
+const { Post } = require('../models');
 const withAuth = require('../utils/auth');
 
-router.get('/', withAuth, async (req, res) => {
-    try {
-        const postData = await Post.findAll({
-            where: {
-                user_id: req.session.user_id,
-            },
-        });
+router.get('/', withAuth, (req, res) => {
+    Post.findAll({
+        where: {
+            user_id: req.session.user_id,
+        }
+    })
+        .then(dbPostData => {
 
-        const posts = postData.map((post) => post.get({ plain: true }));
+            const posts = dbPostData.map((post) => post.get({ plain: true }));
 
-        res.render('new-post', {
-            layout: 'dahsboard',
-            posts,
-            logged_in: req.session.logged_in
+            res.render('all-posts-admin', {
+                layout: 'dashboard',
+                posts
+            });
+        })
+        .catch(err => {
+            res.redirect('login');
         });
-    } catch (err) {
-        res.status(500).json(err);
-    }
 });
 
-router.get('/edit/:id', withAuth, async (req, res) => {
-    try {
-        const postData = await Post.findByPk(req.params.id);
+router.get('/new', withAuth, (req, res) => {
+    res.render('new-post', {
+        layout: 'dashboard',
+    });
+});
 
-        if (postData) {
-            const post = postData.get({ plain: true });
+
+router.get('/edit/:id', withAuth, (req, res) => {
+    Post.findByPk(req.params.id)
+        .then(dbPostData => {
+            if (dbPostData) {
+                const post = dbPostData.get({ plain: true });
 
 
-            res.render('edit-post', {
-                layout: 'dashboard',
-                post,
-                logged_in: req.session.logged_in
-            });
-        } else {
-            res.status(404).end();
-        }
-    } catch (err) {
-        res.status(500).json(err);
-    }
+                res.render('edit-post', {
+                    layout: 'dashboard',
+                    post
+                });
+            } else {
+                res.status(404).end();
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
 });
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const { Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
@@ -8,7 +8,7 @@ router.post('/', withAuth, (req, res) => {
             res.json(newComment);
         })
         .catch(err => {
-            res.status(400).json(err);
+            res.status(500).json(err);
         });
 });
 

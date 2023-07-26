@@ -1,9 +1,9 @@
-<div class="single-post">
+<div class="post">
     <article class="card">
-        <div class="card-header" flex-row justify-space-between>
+        <div class="card-header flex-row justify-space-between">
             <h1>{{post.title}}</h1>
             <div>
-                Posted by {{post.User.username}} on {{post.createdAt}}
+                Posted by {{post.User.username}} on {{format_date post.createdAt}}
             </div>
         </div>
         <div class="card-body">
@@ -13,36 +13,37 @@
 
     {{#if post.Comments}}
     <section class="card">
-        <div class="card-body">
+        <div class="card-header">
             <h2>Comments</h2>
         </div>
 
         <div class="card-body">
             {{#each post.Comments}}
-            <p>
-                {{body}}
-            </p>
-            <p>
-                {{User.username}}, {{format_date crearedAt}}
-            </p>
+            <div>
+                <p>
+                    {{body}}
+                </p>
+                <p>
+                    {{User.username}}, {{format_date crearedAt}}
+                </p>
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
-</div>
-</section>
-{{/if}}
+    </section>
+    {{/if}}
 
-<form id="new-comment-form" class="card">
-    <div class="card-header">
-        <h3>Add a comment</h3>
-    </div>
+    <form id="new-comment-form" class="card">
+        <div class="card-header">
+            <h3>Add a comment</h3>
+        </div>
 
-    <div class="card-body">
-        <input type="hidden" name="post-id" value="{{post.id}}" />
-        <label for="comment-body" class="form-label">Comment</label>
-        <textarea class="form-control" id="comment-body" name="comment-body"></textarea>
-        <button type="submit" class="btn">Submit</button>
-    </div>
-</form>
+        <div class="card-body">
+            <input type="hidden" name="post-id" value="{{post.id}}" />
+            <label for="comment-body" class="form-label">Comment</label>
+            <textarea class="form-input" name="comment-body"></textarea>
+            <button type="submit" class="btn">Submit</button>
+        </div>
+    </form>
 </div>
 
 <script src="/public/js/comment.js"></script>

@@ -6,31 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Blog Corner</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../public/css/style.css">
 </head>
 
 <body class="flex-column min-100-vh">
     <nav class="navbar">
         <ul class="flex-row">
-            <li class="inline-nav"><a href="/">Home</a>Home</li>
-            <li class="inline-nav"><a href="/dashoard">Dashboard</a></li>
-            <li class="inline-nav"><a href="/logout">Logout</a></li>
+            <li class="li-inline nav-item"><a href="/">Home</a>Home</li>
+            <li class="li-inline nav-item"><a href="/dashoard">Dashboard</a></li>
+            <li class="li-inline nav-item"><a href="#" id="logout-link">Logout</a></li>
         </ul>
     </nav>
-    <header class="super">
-        <h1 class="my-dash"><a href="/dashboard">My Dashboard</a></h1>
+    <header class="hero">
+        <h1 class="app-title"><a href="/dashboard">My Dashboard</a></h1>
     </header>
 
     <main class="col-auto">
         {{{body}}}
     </main>
 
-    <footer class="flex-row">
+    <footer class="flex-row flex-row justify-center">
         <a href="/dashboard/new">New Post</a>
     </footer>
 
 </body>
 
 <script src="/public/js/logout.js"></script>
+<script src="/public/js/edit-post.js"></script>
+<script src="/public/js/delete-post.js"></script>
 
 </html>

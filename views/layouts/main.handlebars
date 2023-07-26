@@ -9,26 +9,25 @@
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
 
-<body>
+<body class="flex-coloumn min-100-vh">
     <nav class="navbar">
         <ul>
-            <li class="inline-nav"><a href="/">Home</a></li>
-            <li class="inline-nav"><a href="/dashboard">Dashboard</a></li>
-            <li class="inline-nav"><a href="/login">Login</a></li>
-            <li class="inline-nav"><a href="#">Logout</a></li>
-            <li class="inline-nav"><a href="/signup">Signup</a></li>
+            <li class="li-inline nav-item"><a href="/">Home</a></li>
+            <li class="li-inline nav-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="li-inline nav-item"><a href="/login">Login</a></li>
+            <li class="li-inline nav-item"><a href="#" id="logout-link">Logout</a></li>
         </ul>
     </nav>
 
-    <header>
-        <h1>Tech Blog</h1>
+    <header class="hero">
+        <h1 class="app-title"><a href="/">Tech Blog</a></h1>
     </header>
 
-    <main>
+    <main class="col-auto">
         {{{body}}}
     </main>
 
-    <footer>
+    <footer class="flex-row justify-center">
         Created by Austin Adams
     </footer>
 

@@ -4,7 +4,7 @@ const deleteFormHandler = async function (event) {
     const postId = document.getElementById('post-id')
 
     fetch('/api/post/' + postId.value, {
-        method: 'DELETE',
+        method: 'delete',
     })
         .then(function () {
             document.location.replace('/dashboard');

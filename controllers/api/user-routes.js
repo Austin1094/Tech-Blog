@@ -1,48 +1,55 @@
 const router = require('express').Router();
 const { User } = require('../../models');
 
-router.post('/', (req, res) => {
-    User.create({
-        username: req.body.username,
-        password: req.body.password,
-    })
-        .then(dbUserData => {
-            req.session.save(() => {
-                req.session.userId = dbUserData.id;
-                req.session.username = dbUserData.username;
-                req.session.loggedIn = true;
-
-                res.json(dbUserData);
-            });
+router.post('/', async (req, res) => {
+    try {
+        const newUser = await User.create({
+            username: req.body.username,
+            password: req.body.password,
         })
-        .catch(err => {
-            res.status(500).json(err);
+
+        req.session.save(() => {
+            req.session.userId = newUser.id;
+            req.session.username = newUser.username;
+            req.session.loggedIn = true;
+
+            res.json(newUser);
         });
+    } catch (err) {
+        res.status(500).json(err);
+    };
 });
 
-router.post('/login', (req, res) => {
-    User.findOne({ where: { username: req.body.username } })
-        .then(dbUserData => {
-            if (!dbUserData) {
-                res.status(400).json({ message: 'Incorrect username or password, please try again' });
-                return;
+router.post('/login', async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                username: req.body.username
             }
+        })
 
-            const validPassword = dbUserData.checkPassword(req.body.password);
+        if (!user) {
+            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            return;
+        }
 
-            if (!validPassword) {
-                res.status(400).json({ message: 'Incorrect username or password, please try again' });
-                return;
-            }
+        const validPassword = user.checkPassword(req.body.password);
 
-            req.session.save(() => {
-                req.session.userId = dbUserData.id;
-                req.session.username = dbUserData.username;
-                req.session.loggedIn = true;
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect username or password, please try again' });
+            return;
+        }
 
-                res.json({ user: dbUserData, message: 'You are now logged in!' });
-            });
+        req.session.save(() => {
+            req.session.userId = user.id;
+            req.session.username = user.username;
+            req.session.loggedIn = true;
+
+            res.json({ user, message: 'You are now logged in!' });
         });
+    } catch (err) {
+        res.status(500).json({ message: 'No account found' });
+    }
 });
 
 router.post('/logout', (req, res) => {
@@ -55,22 +62,23 @@ router.post('/logout', (req, res) => {
     }
 });
 
-router.delete("/user/:id", (req, res) => {
-    User.destroy({
-        where: {
-            id: req.params.id
+router.delete("/user/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findOne({ where: { id: userId } });
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
         }
-    })
-        .then(dbUserData => {
-            if (!dbUserData) {
-                res.status(404).json({ message: 'No user found with this id' });
-                return;
-            }
-            res.json(dbUserData);
-        })
-        .catch(err => {
-            res.status(500).json(err);
-        });
+
+        await User.destroy({ where: { id: userId } });
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error('Error occurred during delete:', err);
+        res.status(500).json({ message: 'An error occurred while deleting the user' });
+    }
 });
 
 

@@ -5,7 +5,7 @@ const { Post, Comment, User } = require('../models');
 router.get('/', async (req, res) => {
     try {
         const postData = await Post.findAll({
-            include: [User]
+            include: [User],
         });
 
         const posts = postData.map((post) => post.get({ plain: true }));
@@ -37,7 +37,7 @@ router.get('/post/:id', async (req, res) => {
         }
     } catch (err) {
         res.status(500).json(err);
-    };
+    }
 });
 
 router.get('/login', (req, res) => {
@@ -53,8 +53,8 @@ router.get('/signup', (req, res) => {
     if (req.session.loggedIn) {
         res.redirect('/');
         return;
-    } else {
     }
+
     res.render('signup');
 });
 

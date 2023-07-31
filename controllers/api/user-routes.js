@@ -6,7 +6,7 @@ router.post('/', async (req, res) => {
         const newUser = await User.create({
             username: req.body.username,
             password: req.body.password,
-        })
+        });
 
         req.session.save(() => {
             req.session.userId = newUser.id;
@@ -17,16 +17,16 @@ router.post('/', async (req, res) => {
         });
     } catch (err) {
         res.status(500).json(err);
-    };
+    }
 });
 
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({
             where: {
-                username: req.body.username
+                username: req.body.username,
             }
-        })
+        });
 
         if (!user) {
             res.status(400).json({ message: 'Incorrect username or password, please try again' });
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
             res.json({ user, message: 'You are now logged in!' });
         });
     } catch (err) {
-        res.status(500).json({ message: 'No account found' });
+        res.status(400).json({ message: 'No account found' });
     }
 });
 
@@ -61,25 +61,5 @@ router.post('/logout', (req, res) => {
         res.status(404).end();
     }
 });
-
-router.delete("/user/:id", async (req, res) => {
-    try {
-        const userId = req.params.id;
-        const user = await User.findOne({ where: { id: userId } });
-
-        if (!user) {
-            res.status(404).json({ message: 'User not found' });
-            return;
-        }
-
-        await User.destroy({ where: { id: userId } });
-
-        res.json({ message: 'User deleted successfully' });
-    } catch (err) {
-        console.error('Error occurred during delete:', err);
-        res.status(500).json({ message: 'An error occurred while deleting the user' });
-    }
-});
-
 
 module.exports = router;

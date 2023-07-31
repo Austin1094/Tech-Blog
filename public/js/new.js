@@ -8,11 +8,9 @@ const newFormHandler = async function (event) {
         method: 'POST',
         body: JSON.stringify({
             title,
-            body
+            body,
         }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' },
     });
 
     document.location.replace('/dashboard');

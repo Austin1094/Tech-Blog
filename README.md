@@ -4,6 +4,10 @@
 
 ![Screenshot of completion](./public/images/tech-post.png)
 
+Link:
+
+https://pure-fortress-48210-5ee0fb854c1a.herokuapp.com/login
+
 ## Description
 A tech blog that users can create an account to conversate with other users in the tech world to talk about all things tech.
 
